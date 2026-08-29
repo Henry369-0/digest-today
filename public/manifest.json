@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "快读 — 网页摘要卡片机",
+  "short_name": "快读",
+  "version": "1.0.1",
+  "description": "在任意网页一键生成摘要卡片并朗读：一句话总结 + 3-5 条要点 + 盖章结论 + 关键词。BYO-Key，数据不出本机。",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "快读此页（Alt+Shift+S）",
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options/index.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": ["activeTab", "scripting", "storage"],
+  "optional_host_permissions": ["https://*/*", "http://*/*"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+S"
+      },
+      "description": "快读当前页面"
+    }
+  }
+}

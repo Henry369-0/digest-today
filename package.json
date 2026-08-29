@@ -1,0 +1,33 @@
+{
+  "name": "digest-today",
+  "private": true,
+  "version": "1.0.1",
+  "type": "module",
+  "description": "快读卡片机 · 网页摘要 Chrome 扩展：一键生成摘要卡片并朗读（BYO-Key，复古纸墨风）",
+  "scripts": {
+    "icons": "node scripts/icons.mjs",
+    "build": "npm run icons && tsc --noEmit && vite build && vite build --config vite.content.config.ts",
+    "watch": "node scripts/watch.mjs",
+    "zip": "node scripts/zip.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@mozilla/readability": "^0.6.0",
+    "html-to-image": "^1.11.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/chrome": "^0.1.24",
+    "@types/node": "^26.4.0",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^4.1.11",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.4"
+  }
+}

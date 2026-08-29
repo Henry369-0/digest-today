@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f2ead9;
+  --color-paper-deep: #e9dfc8;
+  --color-ink: #2b2b26;
+  --color-ink-soft: #6f6f66;
+  --color-brick: #b5482a;
+  --color-pine: #3f5c4e;
+  --color-mustard: #d9a441;
+  --font-song: "Noto Serif SC", "Songti SC", SimSun, serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-song);
+}
+
+::selection {
+  background: rgba(181, 72, 42, 0.25);
+}
+
+/* popup 固定 380×560（MV3 弹窗上限 800×600） */
+body.popup-body,
+body.popup-body #root {
+  width: 380px;
+  height: 560px;
+  overflow: hidden;
+}
+body.popup-body #root {
+  position: relative;
+}
+
+/* 纸面颗粒（SVG feTurbulence 噪点） */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* 卡片：双线框（外 3px + 内 1px） */
+.q-card {
+  border: 3px solid var(--color-ink);
+  background:
+    radial-gradient(320px 200px at 12% 0%, rgba(217, 164, 65, 0.1), transparent 60%),
+    radial-gradient(300px 220px at 95% 100%, rgba(63, 92, 78, 0.1), transparent 55%),
+    var(--color-paper);
+  position: relative;
+}
+.q-card-inner {
+  border: 1px solid var(--color-ink);
+  margin: 3px;
+  padding: 14px 14px 12px;
+  position: relative;
+}
+
+/* 顶栏 */
+.q-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 6px;
+  border-bottom: 3px solid var(--color-ink);
+  position: relative;
+}
+.q-header::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  border-bottom: 1px solid var(--color-ink);
+}
+.q-header {
+  margin-bottom: 6px;
+}
+
+/* 标题与分隔线 */
+.q-title {
+  font-weight: 900;
+  font-size: 17px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.q-rule {
+  border-top: 2px solid var(--color-ink);
+  margin: 10px 0;
+}
+.q-rule--thin {
+  border-top-width: 1px;
+}
+
+/* 栏目小标签 */
+.q-label {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  padding: 1px 6px 1px 8px;
+  border: 1px solid var(--color-ink);
+  background: var(--color-paper-deep);
+  margin-right: 8px;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+
+.q-tldr {
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.q-points {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.q-points li {
+  position: relative;
+  padding-left: 14px;
+  margin-bottom: 4px;
+}
+.q-points li::before {
+  content: "·";
+  position: absolute;
+  left: 2px;
+  font-weight: 900;
+  color: var(--color-brick);
+}
+
+/* 盖章：三态，旋转 -6° */
+.stamp {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 3px double currentColor;
+  border-radius: 3px;
+  transform: rotate(-6deg);
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  line-height: 1.4;
+  opacity: 0.92;
+  user-select: none;
+}
+
+.q-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.q-keywords span {
+  font-size: 12px;
+  color: var(--color-pine);
+  border-bottom: 1px dashed var(--color-pine);
+  padding: 0 1px;
+}
+
+.q-bestline {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+  border-left: 3px solid var(--color-mustard);
+  padding-left: 8px;
+  font-style: italic;
+}
+
+/* 操作行 */
+.q-btn {
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  border: 1px solid var(--color-ink);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.06s ease;
+  white-space: nowrap;
+}
+.q-btn:hover {
+  background: var(--color-paper-deep);
+}
+.q-btn:active {
+  transform: translateY(1px);
+}
+.q-btn--primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.q-btn--primary:hover {
+  background: #3a3a33;
+}
+
+/* 输入框 */
+.q-input {
+  font-family: inherit;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--color-ink);
+  background: #faf5ea;
+  color: var(--color-ink);
+  padding: 6px 8px;
+  outline: none;
+}
+.q-input:focus {
+  border-width: 2px;
+  padding: 5px 7px;
+}
+.q-select {
+  font-family: inherit;
+  font-size: 13px;
+  border: 1px solid var(--color-ink);
+  background: #faf5ea;
+  color: var(--color-ink);
+  padding: 6px 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 骨架屏 */
+.q-skel {
+  background: rgba(43, 43, 38, 0.08);
+  border-radius: 2px;
+}
+
+/* 细滚动条 */
+.retro-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.retro-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.retro-scroll::-webkit-scrollbar-thumb {
+  background: rgba(43, 43, 38, 0.3);
+  border-radius: 4px;
+}
+
+/* 徽标/时间等辅助文字 */
+.q-meta {
+  font-size: 10.5px;
+  color: var(--color-ink-soft);
+  letter-spacing: 0.05em;
+}
