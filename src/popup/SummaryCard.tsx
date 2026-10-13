@@ -96,6 +96,7 @@ export default function SummaryCard({ item, onBack, onOpenHistory, onToggleSave 
   const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [pngBusy, setPngBusy] = useState(false);
+  const [pngError, setPngError] = useState<string | null>(null);
   const speech = useSpeech();
 
   const r = item.result;
@@ -112,6 +113,7 @@ export default function SummaryCard({ item, onBack, onOpenHistory, onToggleSave 
 
   const handlePng = useCallback(async () => {
     if (!cardRef.current || pngBusy) return;
+    setPngError(null);
     setPngBusy(true);
     try {
       const dataUrl = await toPng(cardRef.current, {
@@ -122,6 +124,8 @@ export default function SummaryCard({ item, onBack, onOpenHistory, onToggleSave 
       a.download = pngSafeName(item);
       a.href = dataUrl;
       a.click();
+    } catch {
+      setPngError('图片导出失败，请重试，或先复制 MD 保存。');
     } finally {
       setPngBusy(false);
     }
@@ -236,11 +240,13 @@ export default function SummaryCard({ item, onBack, onOpenHistory, onToggleSave 
             className="q-btn"
             style={saved ? { background: 'var(--color-mustard)' } : undefined}
             onClick={() => void handleStar()}
-            title={saved ? '取消收藏' : '收藏（进 v2 周报原料库）'}
+            title={saved ? '取消收藏' : '收藏（长期保留）'}
           >
             {saved ? '★ 已藏' : '⭐'}
           </button>
         </div>
+
+        {pngError && <p role="alert" className="mt-2 text-center text-[13px] text-brick">{pngError}</p>}
 
         {speech.speaking && (
           <div className="flex items-center gap-2 mt-2 justify-center">

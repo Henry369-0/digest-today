@@ -292,7 +292,7 @@ export default function App() {
                 清空全部（回到初始）
               </button>
             </div>
-            <p className="q-meta mt-2">导出文件里 Key 已打码，可以放心分享排错。</p>
+            <p className="q-meta mt-2">未收藏保留最近 30 条，收藏保留至取消或删除。导出文件里 Key 已打码，可以放心分享排错。</p>
           </div>
         </section>
 
