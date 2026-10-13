@@ -44,12 +44,12 @@ Manifest V3 · React 18 + Tailwind 4 · 纯静态包零后端 · **BYO-Key**（L
 - **存 PNG**：2x 高清卡片图，社交分享用
 - **▶ 朗读**：Web Speech API 读 TL;DR + 要点，支持暂停/停止和 0.8-1.5x 速率
 - **⭐ 收藏**：进历史页"已收藏"分区，给 v2 的「本周我看了什么」周报攒原料
-- **✎ 历史**：最近 30 条，可回看、单删、清空
+- **✎ 历史**：未收藏保留最近 30 条；收藏不被新摘要自动裁剪，保留至取消收藏或删除。可回看、单删、清空
 
 ## 开发
 
 ```bash
-npm test          # vitest：prompt 容错解析 / Markdown 生成等纯函数（22 个用例）
+npm test          # vitest：摘要容错 / Markdown / 收藏保留 / 导出错误反馈（27 个用例）
 npm run build     # 图标 → tsc → 主构建（popup/options/background）→ content script IIFE
 npm run watch     # 双构建 watch；改完到 chrome://extensions 点刷新
 npm run zip       # dist → digest-today-v1.0.0.zip（商店上传格式）

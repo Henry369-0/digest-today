@@ -5,6 +5,17 @@ const KEY_HISTORY = 'history';
 const KEY_ONBOARDED = 'onboarded';
 export const HISTORY_LIMIT = 30;
 
+/** 未收藏保留最近 30 条；收藏不参与自动裁剪。列表维持新到旧顺序。 */
+function retainHistory(items: HistoryItem[]): HistoryItem[] {
+  let recent = 0;
+  const seen = new Set<string>();
+  return items.filter(item => {
+    if (seen.has(item.id)) return false;
+    seen.add(item.id);
+    return item.saved || ++recent <= HISTORY_LIMIT;
+  });
+}
+
 export async function getSettings(): Promise<LlmSettings | null> {
   const o = await chrome.storage.local.get(KEY_SETTINGS);
   const s = o[KEY_SETTINGS] as LlmSettings | undefined;
@@ -30,12 +41,12 @@ export async function getHistory(): Promise<HistoryItem[]> {
 }
 
 export async function addHistory(item: HistoryItem): Promise<void> {
-  const list = [item, ...(await getHistory())].slice(0, HISTORY_LIMIT);
+  const list = retainHistory([item, ...(await getHistory())]);
   await chrome.storage.local.set({ [KEY_HISTORY]: list });
 }
 
 export async function toggleSaved(id: string): Promise<HistoryItem[]> {
-  const list = (await getHistory()).map((h) => (h.id === id ? { ...h, saved: !h.saved } : h));
+  const list = retainHistory((await getHistory()).map((h) => (h.id === id ? { ...h, saved: !h.saved } : h)));
   await chrome.storage.local.set({ [KEY_HISTORY]: list });
   return list;
 }

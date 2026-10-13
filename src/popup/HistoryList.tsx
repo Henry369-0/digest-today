@@ -19,6 +19,7 @@ export default function HistoryList({
   onClear,
 }: Props) {
   const savedItems = items.filter((h) => h.saved);
+  const recentItems = items.filter((h) => !h.saved);
 
   const Row = ({ h }: { h: HistoryItem }) => {
     const v = h.result ? VERDICT_INFO[h.result.verdict] : null;
@@ -65,12 +66,13 @@ export default function HistoryList({
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <header className="q-header">
-        <span className="text-[13px] font-semibold">历史 · 最近 30 条</span>
+        <span className="text-[13px] font-semibold">历史与收藏</span>
         <button className="q-btn" onClick={onBack}>
           ← 返回
         </button>
       </header>
       <div className="flex-1 px-3 py-3 min-h-0 retro-scroll overflow-y-auto">
+        <p className="q-meta mb-3">未收藏保留最近 30 条；收藏保留至取消或删除。</p>
         {items.length === 0 ? (
           <div className="q-card">
             <div className="q-card-inner text-center py-10">
@@ -83,18 +85,18 @@ export default function HistoryList({
             {savedItems.length > 0 && (
               <>
                 <div className="q-label mb-2" style={{ borderColor: 'var(--color-mustard)' }}>
-                  ★ 已收藏（v2 周报原料）
+                  ★ 已收藏
                 </div>
                 <ul className="space-y-1.5 mb-4">
                   {savedItems.map((h) => (
                     <Row key={h.id} h={h} />
                   ))}
                 </ul>
-                <div className="q-label mb-2">全部</div>
+                <div className="q-label mb-2">最近未收藏</div>
               </>
             )}
             <ul className="space-y-1.5">
-              {items.map((h) => (
+              {recentItems.map((h) => (
                 <Row key={h.id} h={h} />
               ))}
             </ul>

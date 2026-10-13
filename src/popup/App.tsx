@@ -131,15 +131,18 @@ export default function App() {
   /** 收藏切换：卡片 / 回看 / 历史列表三处共享 */
   const handleToggleSave = useCallback(async (item: HistoryItem): Promise<boolean> => {
     const list = await toggleSaved(item.id);
-    const saved = list.find((h) => h.id === item.id)?.saved ?? false;
-    setHistoryItems((prev) => prev.map((h) => (h.id === item.id ? { ...h, saved } : h)));
+    const retained = list.find((h) => h.id === item.id);
+    const saved = retained?.saved ?? false;
+    setHistoryItems(list);
     setFlow((f) =>
       (f.s === 'card' || f.s === 'degraded') && f.item.id === item.id
-        ? { ...f, item: { ...f.item, saved } }
+        ? retained ? { ...f, item: retained } : { s: 'error', title: '这张卡片已不在历史中，可以重新快读生成新卡片。' }
         : f,
     );
     setView((v) =>
-      v?.kind === 'item' && v.item.id === item.id ? { kind: 'item', item: { ...v.item, saved } } : v,
+      v?.kind === 'item' && v.item.id === item.id
+        ? retained ? { kind: 'item', item: retained } : { kind: 'history' }
+        : v,
     );
     return saved;
   }, []);
